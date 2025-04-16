@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const Categoryrouter = require("./route/categoryRoute");
-const Productrouter = require("./route/productRoute");
-const authUser = require('./route/user.route')
+const Categoryrouter = require("./route/category.Route");
+const Productrouter = require("./route/product.Route");
+const authUser = require('./route/user.Route')
 
 const app = express();
 

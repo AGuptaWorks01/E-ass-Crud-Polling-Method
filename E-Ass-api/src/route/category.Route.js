@@ -1,5 +1,5 @@
 const express = require("express");
-const { getcategories, InsertCategory, EditCategory, DeleteCategory, TruncateData } = require("../controller/categoryController")
+const { getcategories, InsertCategory, EditCategory, DeleteCategory, TruncateData } = require("../controller/category.Controller")
 const router = express.Router();
 
 router.get("/categories", getcategories);

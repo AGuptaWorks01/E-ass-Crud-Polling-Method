@@ -1,4 +1,4 @@
-const ProductsModel = require("../models/productModel")
+const ProductsModel = require("../models/product.Model")
 
 // getAllproducts,
 //     postproducts,
