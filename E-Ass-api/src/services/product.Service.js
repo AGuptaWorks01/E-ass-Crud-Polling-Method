@@ -17,6 +17,8 @@ const getTotalcount = async () => {
     }
 }
 
+
+// =================== Get All Product
 const getAllProducts = async (page) => {
     try {
         const rows = await ProductsModel.getAllproducts(page);
@@ -27,15 +29,17 @@ const getAllProducts = async (page) => {
     }
 };
 
-
-const postProducts = async (name, image, price, category_id) => {
+// =================== Add Product
+const postProducts = async (name, price, category_id, imagePaths = []) => {
     try {
+        const result = await ProductsModel.postproducts(name, price, category_id)
+        const insertId = result.insertId;
 
-        const result = await ProductsModel.postproducts(name, image, price, category_id)
-        if (!result) {
-            throw { status: 400, message: "Invalid product data" };
+        if (imagePaths.length > 0) {
+            await ProductsModel.InsertProductImage(insertId, imagePaths)
         }
-        return result
+
+        return { id: insertId, name, price, category_id, images: imagePaths }
 
     } catch (error) {
         console.log("Error in product service:", error);
@@ -44,6 +48,7 @@ const postProducts = async (name, image, price, category_id) => {
 }
 
 
+// =================== Update Product
 const putProducts = async (id, name, price, category_id) => {
     try {
 
@@ -60,7 +65,7 @@ const putProducts = async (id, name, price, category_id) => {
 }
 
 
-
+// =================== Delete Product
 const deleteProducts = async (id) => {
     try {
 
@@ -89,6 +94,17 @@ const TruncateData = async () => {
     }
 }
 
+
+
+// Insert-Image
+// const InsertProductImage = async (productId, imageUrls) => {
+//     try {
+//         const Values = imageUrls.map((url) => [productId, url]);
+//         const [result] = await 
+//     } catch (error) {
+
+//     }
+// }
 
 module.exports = {
     getAllProducts,

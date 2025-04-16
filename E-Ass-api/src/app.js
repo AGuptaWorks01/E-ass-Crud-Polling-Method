@@ -14,11 +14,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ extended: true }));
 
 // Routes
 app.use("/category", Categoryrouter);
 app.use("/product", Productrouter);
 app.use("/auth", authUser)
+
+// For upload image
+app.use("/api/uploads", express.static("uploads"));
+
 
 module.exports = app;

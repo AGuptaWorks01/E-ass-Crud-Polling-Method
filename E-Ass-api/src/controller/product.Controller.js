@@ -23,15 +23,24 @@ const getProducts = async (req, res) => {
 
 const InsertProducts = async (req, res) => {
     try {
-        const { name, image, price, category_id } = req.body
+        const { name, price, category_id } = req.body
+
 
         if (!name || !price || !category_id) {
             return res.status(400).json({
                 message: "Missing required fields: name, price, category_id",
             });
         }
+        // const imagePaths = req.files ? req.files.map(file => file.path) : [];
+        // console.log("imagepaths", imagePaths);
+        const files = req.files || []
+        const imagePaths = files.map(file =>
+            file.path.replace(/\\/g, '/')
+        )
+        console.log("Path is ", imagePaths);
 
-        const result = await ProductsSevice.postProducts(name, image, price, category_id);
+        const result = await ProductsSevice.postProducts(name, price, category_id, imagePaths);
+
         return res.status(201).json({
             message: "Product created successfully",
             data: result,
@@ -47,62 +56,62 @@ const InsertProducts = async (req, res) => {
 
 }
 
-    const EditProducts = async (req, res) => {
-        try {
+const EditProducts = async (req, res) => {
+    try {
 
-            const { name, price, category_id } = req.body;
-            const id = req.params.id
-            if (!id || !name) {
-                return res.status(400).json({ message: "In correct data is provided" });
-            }
-            const result = await ProductsSevice.putProducts(id, name, price, category_id);
-            if (!result) {
-                return res.status(404).json({ message: "Products not found." });
-            }
-            return res.status(200).json(result)
-
-        } catch (error) {
-            console.log("Edit Products in controller");
-            throw error
+        const { name, price, category_id } = req.body;
+        const id = req.params.id
+        if (!id || !name) {
+            return res.status(400).json({ message: "In correct data is provided" });
         }
-    }
-
-
-    const DeleteProducts = async (req, res) => {
-        try {
-
-            const id = req.params.id;
-            if (!id) {
-                return res.status(400).json({ message: "In correct data is provided" });
-            }
-
-            const result = await ProductsSevice.deleteProducts(id);
-
-            return res.status(200).json(result);
-
-        } catch (error) {
-            console.log("error in delete categroy in controller", error)
+        const result = await ProductsSevice.putProducts(id, name, price, category_id);
+        if (!result) {
+            return res.status(404).json({ message: "Products not found." });
         }
+        return res.status(200).json(result)
+
+    } catch (error) {
+        console.log("Edit Products in controller");
+        throw error
     }
+}
 
 
-    const TruncateData = async (req, res) => {
-        try {
+const DeleteProducts = async (req, res) => {
+    try {
 
-            const result = await ProductsSevice.TruncateData();
-            return res.status(200).json(result)
-
-        } catch (error) {
-            console.log("error in truncate controller", error);
-            throw error
+        const id = req.params.id;
+        if (!id) {
+            return res.status(400).json({ message: "In correct data is provided" });
         }
+
+        const result = await ProductsSevice.deleteProducts(id);
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        console.log("error in delete categroy in controller", error)
     }
+}
 
 
-    module.exports = {
-        getProducts,
-        InsertProducts,
-        EditProducts,
-        DeleteProducts,
-        TruncateData,
+const TruncateData = async (req, res) => {
+    try {
+
+        const result = await ProductsSevice.TruncateData();
+        return res.status(200).json(result)
+
+    } catch (error) {
+        console.log("error in truncate controller", error);
+        throw error
     }
+}
+
+
+module.exports = {
+    getProducts,
+    InsertProducts,
+    EditProducts,
+    DeleteProducts,
+    TruncateData,
+}

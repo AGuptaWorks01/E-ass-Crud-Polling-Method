@@ -31,14 +31,14 @@ const getAllproducts = async (page) => {
 
 
 const { v4: uuidv4 } = require('uuid');
-const postproducts = async (name, image, price, category_id) => {
+const postproducts = async (name, price, category_id) => {
     try {
         const uuid = uuidv4();
 
         const [result] = await promisePool.execute(
             `INSERT INTO products
-            (uuid, name,image,price,category_id)
-            VALUES (?,?,?,?,?)`, [uuid, name, image, price, category_id])
+            (uuid, name,price,category_id)
+            VALUES (?,?,?,?)`, [uuid, name, price, category_id])
         return result
 
     } catch (error) {
@@ -102,11 +102,27 @@ const TruncateData = async () => {
 }
 
 
+
+// Insert-Image
+const InsertProductImage = async (productId, imageUrls) => {
+    try {
+        const Values = imageUrls.map((url) => [productId, url]);
+        const [result] = await promisePool.query(
+            `INSERT INTO product_images (product_id, image_url) VALUES ?`, [Values]
+        );
+        return result;
+    } catch (error) {
+        console.error("Error inserting product images:", error);
+        throw error;
+    }
+}
+
 module.exports = {
     getAllproducts,
     postproducts,
     putproducts,
     deleteproducts,
     TruncateData,
-    tostalProduct
+    tostalProduct,
+    InsertProductImage
 };
