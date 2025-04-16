@@ -1,11 +1,5 @@
 const ProductsModel = require("../models/product.Model")
 
-// getAllproducts,
-//     postproducts,
-//     putproducts,
-//     deleteproducts,
-//     TruncateData
-
 const getTotalcount = async () => {
     try {
 
