@@ -6,14 +6,14 @@ const ProductsModel = require("../models/product.Model")
 //     deleteproducts,
 //     TruncateData
 
-const getTotalcount = async () =>{
-    try{
+const getTotalcount = async () => {
+    try {
 
         const total = await ProductsModel.tostalProduct();
         return total;
 
-    }catch (err) {
-        console.log(err,()=>console.log("Error in total count"))
+    } catch (err) {
+        console.log(err, () => console.log("Error in total count"))
     }
 }
 
@@ -28,23 +28,23 @@ const getAllProducts = async (page) => {
 };
 
 
-const postProducts = async (name,price, category_id) => {
+const postProducts = async (name, image, price, category_id) => {
     try {
 
-        const result = await ProductsModel.postproducts(name,price, category_id)
+        const result = await ProductsModel.postproducts(name, image, price, category_id)
         if (!result) {
-            return "Data is in valid"
+            throw { status: 400, message: "Invalid product data" };
         }
         return result
 
     } catch (error) {
-        console.log("Error inserting in Products", error);
+        console.log("Error in product service:", error);
         throw error;
     }
 }
 
 
-const putProducts = async (id, name,price, category_id) => {
+const putProducts = async (id, name, price, category_id) => {
     try {
 
         const result = await ProductsModel.putproducts(id, name, price, category_id);
@@ -53,7 +53,7 @@ const putProducts = async (id, name,price, category_id) => {
         }
         return result
 
-    } catch (error){
+    } catch (error) {
         console.log("edit the Products", result);
         throw error;
     }
@@ -70,7 +70,7 @@ const deleteProducts = async (id) => {
         }
         return result
 
-    } catch (error){
+    } catch (error) {
         console.log("edit the Products", result);
         throw error;
     }
@@ -78,12 +78,12 @@ const deleteProducts = async (id) => {
 
 
 const TruncateData = async () => {
-    try{
+    try {
 
         const result = await ProductsModel.TruncateData();
         return result;
 
-    } catch (error){
+    } catch (error) {
         console.log("error in trucate service", error);
         throw error
     }

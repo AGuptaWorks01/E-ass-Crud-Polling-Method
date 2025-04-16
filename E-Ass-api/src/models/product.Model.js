@@ -1,4 +1,3 @@
-// productsService.js (or wherever you handle the products logic)
 const promisePool = require("../utils/dbConnection.Util");
 
 const tostalProduct = async () => {
@@ -15,7 +14,13 @@ const getAllproducts = async (page) => {
         const limit = "10";
         const offset = (page - 1) * parseInt(limit);
         const [rows] = await promisePool.execute(
-            "SELECT p.id, p.name, p.price, p.created_at, p.updated_at, p.category_id ,c.name as category_name  FROM products p JOIN categories c ON p.category_id = c.id LIMIT ? OFFSET ?",
+            `SELECT 
+            p.id, p.name, p.image, p.price,
+            p.created_at, p.updated_at, p.category_id ,
+            c.name as category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            LIMIT ? OFFSET ?`,
             [limit, String(offset)]);
         return rows;
     } catch (error) {
@@ -25,10 +30,15 @@ const getAllproducts = async (page) => {
 };
 
 
-const postproducts = async (name, price, category_id) => {
+const { v4: uuidv4 } = require('uuid');
+const postproducts = async (name, image, price, category_id) => {
     try {
+        const uuid = uuidv4();
 
-        const [result] = await promisePool.execute("INSERT INTO products (name,price,category_id) VALUES (?,?,?)", [name, price, category_id])
+        const [result] = await promisePool.execute(
+            `INSERT INTO products
+            (uuid, name,image,price,category_id)
+            VALUES (?,?,?,?,?)`, [uuid, name, image, price, category_id])
         return result
 
     } catch (error) {
