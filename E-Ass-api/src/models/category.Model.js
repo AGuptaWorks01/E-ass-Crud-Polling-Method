@@ -26,16 +26,18 @@ const getAllCategory = async (page) => {
 
 // Add new category with UUID
 
-const uuid = require('uuid').v4(); // Generate UUID
+const { v4: uuidv4 } = require('uuid'); // Generate UUID
 const postCategory = async (name) => {
-    try {
+    const uuid = uuidv4();
 
+    try {
         const [result] = await promisePool.execute("INSERT INTO categories (uuid, name) VALUES (?,?)", [uuid, name])
         return result
 
     } catch (error) {
-        console.log("Error inserting in categories", error);
+        // console.log("Error inserting in categories", error);
         throw error;
+        
     }
 }
 

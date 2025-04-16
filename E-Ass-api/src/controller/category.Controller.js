@@ -34,7 +34,9 @@ const InsertCategory = async (req, res) => {
                 message: "category name not found"
             });
         }
+
         const Insertcategory = await categorySevice.postCategory(name);
+
         if (!Insertcategory || !Insertcategory.affectedRows) {
             return res.status(500).json({
                 message: "Failed to create category",
@@ -47,8 +49,12 @@ const InsertCategory = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error in insert category", error);
-        res.status(500).json({ message: "Error inserting categories", error: error.message })
+        // console.error("Error in insert category", error);
+
+        const statusCode = error.status || 500;
+        return res.status(statusCode).json({
+            message: error.message || "Internal Server Error",
+        });
     }
 }
 
