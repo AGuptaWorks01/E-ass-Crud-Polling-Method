@@ -5,10 +5,12 @@ const getProducts = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
 
         const Products = await ProductsSevice.getAllProducts(page);
-        const totalCount = await ProductsSevice.getTotalcount()
+        const totalCount = await ProductsSevice.getTotalcount();
+
         if (!Products || Products.length === 0) {
             return res.status(404).json({ message: "No Products found" });
         }
+
         res.status(200).json({
             Products,
             totalCount,
@@ -24,7 +26,9 @@ const getProducts = async (req, res) => {
 const InsertProducts = async (req, res) => {
     try {
         const { name, price, category_id } = req.body
-
+        const files = req.files || [];
+        const imagePaths = files.map(file => file.path.replace(/\\/g, '/'));
+        console.log("Path is ", imagePaths);
 
         if (!name || !price || !category_id) {
             return res.status(400).json({
@@ -33,14 +37,10 @@ const InsertProducts = async (req, res) => {
         }
         // const imagePaths = req.files ? req.files.map(file => file.path) : [];
         // console.log("imagepaths", imagePaths);
-        const files = req.files || []
-        const imagePaths = files.map(file =>
-            file.path.replace(/\\/g, '/')
-        )
-        console.log("Path is ", imagePaths);
+    
 
         const result = await ProductsSevice.postProducts(name, price, category_id, imagePaths);
-
+        console.log(result);
         return res.status(201).json({
             message: "Product created successfully",
             data: result,
@@ -53,39 +53,60 @@ const InsertProducts = async (req, res) => {
             error: error.error || null,
         });
     }
-
 }
 
 const EditProducts = async (req, res) => {
     try {
-
         const { name, price, category_id } = req.body;
         const id = req.params.id
-        if (!id || !name) {
-            return res.status(400).json({ message: "In correct data is provided" });
+
+        if (!id || !name || !price || !category_id) {
+            return res.status(400).json({ message: "Incorrect data provided" });
         }
-        const result = await ProductsSevice.putProducts(id, name, price, category_id);
-        if (!result) {
-            return res.status(404).json({ message: "Products not found." });
-        }
-        return res.status(200).json(result)
+
+        const files = req.files || [];
+        const imagePaths = files.map(file =>
+            file.path.replace(/\\/g, '/')
+        )
+
+        const result = await ProductsSevice.putProducts(id, name, price, category_id, imagePaths);
+
+        return res.status(200).json({
+            message: "Product updated successfully",
+            data: result,
+        });
+
 
     } catch (error) {
         console.log("Edit Products in controller");
-        throw error
+        return res.status(500).json({
+            message: "Error updating product",
+            error: error.message,
+        });
     }
 }
 
 
 const DeleteProducts = async (req, res) => {
     try {
-
         const id = req.params.id;
         if (!id) {
-            return res.status(400).json({ message: "In correct data is provided" });
+            return res.status(400).json({ message: "Incorrect data provided" });
         }
 
         const result = await ProductsSevice.deleteProducts(id);
+        if (!result) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Delete associated images from disk
+        const imagePaths = product.images || [];
+        imagePaths.forEach(imagePath => {
+            const fullPath = path.resolve(imagePath);
+            fs.unlink(fullPath, err => {
+                if (err) console.error("Error deleting image:", err);
+            });
+        });
 
         return res.status(200).json(result);
 
@@ -97,7 +118,6 @@ const DeleteProducts = async (req, res) => {
 
 const TruncateData = async (req, res) => {
     try {
-
         const result = await ProductsSevice.TruncateData();
         return res.status(200).json(result)
 

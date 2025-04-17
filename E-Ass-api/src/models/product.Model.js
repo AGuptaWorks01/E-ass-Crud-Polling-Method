@@ -14,7 +14,7 @@ const getAllproducts = async (page) => {
         const limit = 10;
         const offset = (page - 1) * limit;
         console.log("LIMIT:", limit, "OFFSET:", offset); // for debug.
-        
+
         const [rows] = await promisePool.query(
             `SELECT 
                 p.id, 
@@ -73,12 +73,13 @@ const checkCategoryExists = async (category_id) => {
 };
 
 
-const putproducts = async (id, name, price, category_id) => {
+const putproducts = async (id, name, price, category_id, imagePaths = []) => {
     try {
         const categoryExists = await checkCategoryExists(category_id);
         if (!categoryExists) {
             throw new Error(`Category with ID ${category_id} does not exist`);
         }
+
 
         const [rows] = await promisePool.execute(
             'UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?',
@@ -95,7 +96,8 @@ const putproducts = async (id, name, price, category_id) => {
 const deleteproducts = async (id) => {
     try {
 
-        const [rows] = await promisePool.execute("DELETE FROM products WHERE id = ?", [id]);
+        const [rows] = await promisePool.execute(
+            `DELETE FROM products WHERE id = ? `, [id]);
         return rows
 
     } catch (error) {
@@ -103,6 +105,7 @@ const deleteproducts = async (id) => {
         throw error
     }
 }
+
 
 
 const TruncateData = async () => {
@@ -133,6 +136,31 @@ const InsertProductImage = async (productId, imageUrls) => {
     }
 }
 
+
+const getProductById = async (id) => {
+    const [rows] = await promisePool.execute(
+        `SELECT 
+            p.*, 
+            GROUP_CONCAT(pi.image_url) AS images 
+        FROM products p 
+        LEFT JOIN product_images pi ON p.id = pi.product_id 
+        WHERE p.id = ? 
+        GROUP BY p.id`,
+        [id]
+    );
+
+    if (rows.length === 0) return null;
+
+    return {
+        ...rows[0],
+        images: rows[0].images ? rows[0].images.split(',') : []
+    };
+};
+
+const deleteProductImages = async (productId) => {
+    await promisePool.execute("DELETE FROM product_images WHERE product_id = ?", [productId]);
+};
+
 module.exports = {
     getAllproducts,
     postproducts,
@@ -140,5 +168,6 @@ module.exports = {
     deleteproducts,
     TruncateData,
     tostalProduct,
-    InsertProductImage
+    InsertProductImage,
+    deleteProductImages,getProductById
 };

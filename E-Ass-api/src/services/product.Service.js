@@ -1,8 +1,10 @@
 const ProductsModel = require("../models/product.Model")
+const fs = require("fs");
+const path = require("path");
+
 
 const getTotalcount = async () => {
     try {
-
         const total = await ProductsModel.tostalProduct();
         return total;
 
@@ -43,15 +45,33 @@ const postProducts = async (name, price, category_id, imagePaths = []) => {
 
 
 // =================== Update Product
-const putProducts = async (id, name, price, category_id) => {
+const putProducts = async (id, name, price, category_id, imagePaths = []) => {
     try {
-
-        const result = await ProductsModel.putproducts(id, name, price, category_id);
-        if (!result) {
-            return "Data is invalid";
+        const productExists = await ProductsModel.getProductById(id);
+        if (!productExists) {
+            throw new Error(`Product with ID ${id} does not exist`);
         }
-        return result
+        console.log(productExists);
 
+        await ProductsModel.putproducts(id, name, price, category_id);
+
+        // if (imagePaths.length > 0) {
+        //     const oldProduct = await ProductsModel.getProductById(id);
+
+        //     if (oldProduct?.images?.length > 0) {
+        //         oldProduct.images.forEach(img => {
+        //             const filePath = path.resolve(img);
+        //             fs.unlink(filePath, err => {
+        //                 if (err) console.error("Error deleting old image:", filePath);
+        //             });
+        //         });
+        //     }
+
+        if (imagePaths.length > 0) {
+            await ProductsModel.deleteProductImages(id);
+            await ProductsModel.InsertProductImage(id, imagePaths);
+        }
+        return { id, name, price, category_id, images: imagePaths };
     } catch (error) {
         console.log("edit the Products", result);
         throw error;
@@ -62,23 +82,33 @@ const putProducts = async (id, name, price, category_id) => {
 // =================== Delete Product
 const deleteProducts = async (id) => {
     try {
-
-        const result = await ProductsModel.deleteproducts(id);
-        if (!result) {
-            return "Data is invalid";
+        const product = await ProductsModel.getProductById(id);
+        if (!product) {
+            return null;
         }
-        return result
+
+        if (product?.images?.length > 0) {
+            product.images.forEach(imagePath => {
+                const fullPath = path.resolve(imagePath);
+                fs.unlink(fullPath, err => {
+                    if (err) console.error("Error deleting image:", err);
+                });
+            });
+        }
+
+        await ProductsModel.deleteProductImages(id);
+        const result = await ProductsModel.deleteproducts(id);
+        return result;
 
     } catch (error) {
-        console.log("edit the Products", result);
+        console.log("Error in deleteProducts service:", error);
         throw error;
     }
-}
+};
 
 
 const TruncateData = async () => {
     try {
-
         const result = await ProductsModel.TruncateData();
         return result;
 
@@ -88,17 +118,6 @@ const TruncateData = async () => {
     }
 }
 
-
-
-// Insert-Image
-// const InsertProductImage = async (productId, imageUrls) => {
-//     try {
-//         const Values = imageUrls.map((url) => [productId, url]);
-//         const [result] = await 
-//     } catch (error) {
-
-//     }
-// }
 
 module.exports = {
     getAllProducts,
