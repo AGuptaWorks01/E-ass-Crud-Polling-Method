@@ -51,7 +51,17 @@ const putProducts = async (id, name, price, category_id, imagePaths = []) => {
         if (!productExists) {
             throw new Error(`Product with ID ${id} does not exist`);
         }
-        console.log(productExists);
+        // console.log(productExists);
+
+        // 🔥 Delete old image files from disk
+        if (productExists?.images?.length > 0) {
+            productExists.images.forEach(img => {
+                const filePath = path.resolve(img);
+                fs.unlink(filePath, err => {
+                    if (err) console.error("Error deleting old image file:", filePath);
+                });
+            });
+        }
 
         await ProductsModel.putproducts(id, name, price, category_id);
 
@@ -66,14 +76,14 @@ const putProducts = async (id, name, price, category_id, imagePaths = []) => {
         //             });
         //         });
         //     }
-
+        
+        await ProductsModel.deleteProductImages(id);
         if (imagePaths.length > 0) {
-            await ProductsModel.deleteProductImages(id);
             await ProductsModel.InsertProductImage(id, imagePaths);
         }
         return { id, name, price, category_id, images: imagePaths };
     } catch (error) {
-        console.log("edit the Products", result);
+        console.log("edit the Products",error);
         throw error;
     }
 }

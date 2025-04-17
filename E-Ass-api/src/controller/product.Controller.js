@@ -64,10 +64,11 @@ const EditProducts = async (req, res) => {
             return res.status(400).json({ message: "Incorrect data provided" });
         }
 
+        // ========== Replacing image path 
         const files = req.files || [];
         const imagePaths = files.map(file =>
             file.path.replace(/\\/g, '/')
-        )
+        );
 
         const result = await ProductsSevice.putProducts(id, name, price, category_id, imagePaths);
         return res.status(200).json({

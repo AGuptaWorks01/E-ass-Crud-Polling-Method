@@ -73,6 +73,25 @@ const checkCategoryExists = async (category_id) => {
 };
 
 
+// const putproducts = async (id, name, price, category_id, imagePaths = []) => {
+//     try {
+//         const categoryExists = await checkCategoryExists(category_id);
+//         if (!categoryExists) {
+//             throw new Error(`Category with ID ${category_id} does not exist`);
+//         }
+
+//         const [rows] = await promisePool.execute(
+//             'UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?',
+//             [name, price, category_id, id]
+//         );
+
+//         return rows;
+//     } catch (error) {
+//         console.log("Error updating product:", error);
+//         throw error;
+//     }
+// }
+
 const putproducts = async (id, name, price, category_id, imagePaths = []) => {
     try {
         const categoryExists = await checkCategoryExists(category_id);
@@ -80,22 +99,36 @@ const putproducts = async (id, name, price, category_id, imagePaths = []) => {
             throw new Error(`Category with ID ${category_id} does not exist`);
         }
 
-
-        const [rows] = await promisePool.execute(
+        // Step 1: Update product data
+        await promisePool.execute(
             'UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?',
             [name, price, category_id, id]
         );
 
-        return rows;
+        // Step 2: Delete old images
+        await deleteProductImages(id);
+
+        // Step 3: Insert new images if provided
+        if (imagePaths.length > 0) {
+            await InsertProductImage(id, imagePaths);
+        }
+
+        return {
+            id,
+            name,
+            price,
+            category_id,
+            images: imagePaths,
+        };
     } catch (error) {
         console.log("Error updating product:", error);
         throw error;
     }
-}
+};
+
 
 const deleteproducts = async (id) => {
     try {
-
         const [rows] = await promisePool.execute(
             `DELETE FROM products WHERE id = ? `, [id]);
         return rows
