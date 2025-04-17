@@ -37,7 +37,7 @@ const InsertProducts = async (req, res) => {
         }
         // const imagePaths = req.files ? req.files.map(file => file.path) : [];
         // console.log("imagepaths", imagePaths);
-    
+
 
         const result = await ProductsSevice.postProducts(name, price, category_id, imagePaths);
         console.log(result);
@@ -70,7 +70,6 @@ const EditProducts = async (req, res) => {
         )
 
         const result = await ProductsSevice.putProducts(id, name, price, category_id, imagePaths);
-
         return res.status(200).json({
             message: "Product updated successfully",
             data: result,
@@ -94,13 +93,13 @@ const DeleteProducts = async (req, res) => {
             return res.status(400).json({ message: "Incorrect data provided" });
         }
 
-        const result = await ProductsSevice.deleteProducts(id);
-        if (!result) {
+        const products = await ProductsSevice.deleteProducts(id);
+        if (!products) {
             return res.status(404).json({ message: "Product not found" });
         }
 
         // Delete associated images from disk
-        const imagePaths = product.images || [];
+        const imagePaths = products.images || [];
         imagePaths.forEach(imagePath => {
             const fullPath = path.resolve(imagePath);
             fs.unlink(fullPath, err => {
@@ -108,10 +107,22 @@ const DeleteProducts = async (req, res) => {
             });
         });
 
-        return res.status(200).json(result);
+        // Step 3: Delete product from DB
+        await ProductsSevice.deleteProducts(id);
+        return res.status(200).json({
+            message: "Product and images deleted successfully",
+            data: {
+                deleted: true,
+                productId: id
+            }
+        });
 
     } catch (error) {
-        console.log("error in delete categroy in controller", error)
+        console.error("error in delete category in controller", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
     }
 }
 

@@ -138,7 +138,7 @@ const InsertProductImage = async (productId, imageUrls) => {
 
 
 const getProductById = async (id) => {
-    const [rows] = await promisePool.execute(
+    const [rows] = await promisePool.query(
         `SELECT 
             p.*, 
             GROUP_CONCAT(pi.image_url) AS images 
@@ -169,5 +169,5 @@ module.exports = {
     TruncateData,
     tostalProduct,
     InsertProductImage,
-    deleteProductImages,getProductById
+    deleteProductImages, getProductById
 };
