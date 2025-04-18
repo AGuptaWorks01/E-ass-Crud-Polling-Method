@@ -9,44 +9,6 @@ const tostalProduct = async () => {
 }
 
 
-// const getAllproducts = async (page, sort='asc') => {
-//     try {
-//         const limit = 10;
-//         const offset = (page - 1) * limit;
-//         // console.log("LIMIT:", limit, "OFFSET:", offset); // for debug.
-
-//         // const [rows] = await promisePool.query(
-//         const query =
-//             `SELECT 
-//                 p.id, 
-//                 p.name, 
-//                 p.price,
-//                 p.created_at, 
-//                 p.updated_at, 
-//                 p.category_id,
-//                 c.name AS category_name,
-//                 GROUP_CONCAT(pi.image_url) AS images
-//             FROM products p
-//             JOIN categories c ON p.category_id = c.id
-//             LEFT JOIN product_images pi ON p.id = pi.product_id
-//             GROUP BY p.id
-//             ORDER BY p.price ${sort.toUpperCase()} -- Apply sorting here
-//             LIMIT ? OFFSET ?;`;
-//         // [limit, offset] // );
-//         const [rows] = await promisePool.query(query, [limit, offset])
-
-//         // Convert comma-separated string to array
-//         const productsWithImages = rows.map(product => ({
-//             ...product,
-//             images: product.images ? product.images.split(',') : []
-//         }));
-
-//         return productsWithImages;
-//     } catch (error) {
-//         console.error("Error fetching products:", error);
-//         throw error;
-//     }
-// };
 const getAllproducts = async (page, sort = 'asc', search = '', category = '') => {
     try {
         const limit = 10;
@@ -217,6 +179,32 @@ const deleteProductImages = async (productId) => {
     await promisePool.execute("DELETE FROM product_images WHERE product_id = ?", [productId]);
 };
 
+
+
+const getAllProductsForReport = async () => {
+    try {
+        const query = `
+            SELECT 
+                p.id, 
+                p.name, 
+                p.price,
+                p.created_at, 
+                p.updated_at, 
+                c.name AS category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            ORDER BY p.created_at DESC;
+        `;
+        const [rows] = await promisePool.query(query);
+        return rows;
+    } catch (error) {
+        console.error("Error fetching products for report:", error);
+        throw error;
+    }
+};
+
+
+
 module.exports = {
     getAllproducts,
     postproducts,
@@ -224,5 +212,6 @@ module.exports = {
     deleteproducts,
     tostalProduct,
     InsertProductImage,
-    deleteProductImages, getProductById
+    deleteProductImages, getProductById,
+    getAllProductsForReport,
 };

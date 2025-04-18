@@ -1,4 +1,6 @@
 const ProductsSevice = require("../services/product.Service");
+const fs = require("fs");
+
 
 const getProducts = async (req, res) => {
     try {
@@ -161,10 +163,44 @@ const getProductById = async (req, res) => {
 
 
 
+const downloadProductReport = async (req, res) => {
+    try {
+        const { format } = req.query;
+        const validFormats = ['csv', 'xlsx'];
+
+        if (!validFormats.includes(format)) {
+            return res.status(400).json({ message: "Invalid format. Use 'csv' or 'xlsx'." });
+        }
+
+        const filePath = await ProductsSevice.generateProductReport(format);
+
+        res.download(filePath, err => {
+            if (err) {
+                console.error("Error sending file:", err);
+                res.status(500).json({ message: "Error downloading file" });
+            }
+
+            // Cleanup file after sending
+            // setTimeout(() => {
+            //     fs.unlink(filePath, err => {
+            //         if (err) console.error("Error deleting temp report file:", err);
+            //     });
+            // }, 5000);
+        });
+
+    } catch (error) {
+        console.error("Error downloading report:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+
+
 module.exports = {
     getProducts,
     getProductById,
     InsertProducts,
     EditProducts,
     DeleteProducts,
+    downloadProductReport
 }

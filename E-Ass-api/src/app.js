@@ -17,9 +17,9 @@ app.use(cors(corsOptions));
 app.use(express.json({ extended: true }));
 
 // Routes
-app.use("/category", Categoryrouter);
-app.use("/product", Productrouter);
-app.use("/auth", authUser)
+app.use("/api/categories", Categoryrouter);
+app.use("/api/products", Productrouter);
+app.use("/api/auth", authUser);
 
 // For upload image
 app.use("/api/uploads", express.static("uploads"));

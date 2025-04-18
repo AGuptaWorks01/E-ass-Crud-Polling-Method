@@ -1,6 +1,9 @@
 const ProductsModel = require("../models/product.Model")
 const fs = require("fs");
 const path = require("path");
+const ExcelJS = require("exceljs");
+const { format } = require("date-fns");
+const { writeToPath } = require("fast-csv");
 
 
 const getTotalcount = async () => {
@@ -116,11 +119,61 @@ const deleteProducts = async (id) => {
 };
 
 
+
+const generateProductReport = async (formatType = 'csv') => {
+    try {
+        const products = await ProductsModel.getAllProductsForReport();
+        const timestamp = format(new Date(), "yyyyMMdd_HHmmss");
+        
+        // Ensure the reports folder exists
+        const reportsDir = path.join(__dirname, "../reports");
+        if (!fs.existsSync(reportsDir)) {
+            fs.mkdirSync(reportsDir, { recursive: true });
+        }
+
+        const fileName = `products_report_${timestamp}.${formatType}`;
+        const filePath = path.join(__dirname, `../reports/${fileName}`);
+
+        if (formatType === 'csv') {
+            await new Promise((resolve, reject) => {
+                writeToPath(filePath, products, { headers: true })
+                    .on("finish", resolve)
+                    .on("error", reject);
+            });
+        } else if (formatType === 'xlsx') {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet("Products");
+
+            worksheet.columns = [
+                { header: "ID", key: "id" },
+                { header: "Name", key: "name" },
+                { header: "Price", key: "price" },
+                { header: "Category", key: "category_name" },
+                { header: "Created At", key: "created_at" },
+                { header: "Updated At", key: "updated_at" }
+            ];
+
+            products.forEach(product => {
+                worksheet.addRow(product);
+            });
+
+            await workbook.xlsx.writeFile(filePath);
+        }
+
+        return filePath;
+    } catch (error) {
+        console.error("Error generating report:", error);
+        throw error;
+    }
+};
+
+
 module.exports = {
     getAllProducts,
     getProductById,
     postProducts,
     putProducts,
     deleteProducts,
-    getTotalcount
+    getTotalcount,
+    generateProductReport
 };

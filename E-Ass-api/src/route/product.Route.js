@@ -1,5 +1,5 @@
 const express = require("express");
-const { getProducts, InsertProducts, EditProducts, DeleteProducts, getProductById } = require("../controller/product.Controller")
+const { getProducts, InsertProducts, EditProducts, DeleteProducts, getProductById, downloadProductReport } = require("../controller/product.Controller")
 
 const upload = require("../middleware.js/upload");
 const authMiddleware = require("../middleware.js/auth.middleware");
@@ -21,7 +21,7 @@ router.put("/products/:id", authMiddleware, upload.array('images', 5), EditProdu
 
 router.delete("/products/:id", authMiddleware, DeleteProducts);
 
-
+router.get('/report/download', downloadProductReport);
 
 module.exports = router
 
