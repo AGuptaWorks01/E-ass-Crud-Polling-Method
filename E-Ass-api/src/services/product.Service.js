@@ -15,9 +15,9 @@ const getTotalcount = async () => {
 
 
 // =================== Get All Product
-const getAllProducts = async (page) => {
+const getAllProducts = async (page, sort) => {
     try {
-        const rows = await ProductsModel.getAllproducts(page);
+        const rows = await ProductsModel.getAllproducts(page, sort);
         return rows;
     } catch (error) {
         console.error("Error fetching Products from DB:", error);
@@ -36,7 +36,6 @@ const postProducts = async (name, price, category_id, imagePaths = []) => {
         }
 
         return { id: insertId, name, price, category_id, images: imagePaths }
-
     } catch (error) {
         console.log("Error in product service:", error);
         throw error;
@@ -53,7 +52,7 @@ const putProducts = async (id, name, price, category_id, imagePaths = []) => {
         }
         // console.log(productExists);
 
-        // 🔥 Delete old image files from disk
+        //  Delete old image files from disk
         if (productExists?.images?.length > 0) {
             productExists.images.forEach(img => {
                 const filePath = path.resolve(img);
@@ -64,18 +63,6 @@ const putProducts = async (id, name, price, category_id, imagePaths = []) => {
         }
 
         await ProductsModel.putproducts(id, name, price, category_id);
-
-        // if (imagePaths.length > 0) {
-        //     const oldProduct = await ProductsModel.getProductById(id);
-
-        //     if (oldProduct?.images?.length > 0) {
-        //         oldProduct.images.forEach(img => {
-        //             const filePath = path.resolve(img);
-        //             fs.unlink(filePath, err => {
-        //                 if (err) console.error("Error deleting old image:", filePath);
-        //             });
-        //         });
-        //     }
         
         await ProductsModel.deleteProductImages(id);
         if (imagePaths.length > 0) {

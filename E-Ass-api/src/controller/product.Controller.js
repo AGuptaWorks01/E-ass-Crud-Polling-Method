@@ -3,9 +3,17 @@ const ProductsSevice = require("../services/product.Service");
 const getProducts = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
+        const sort = req.query.sort || 'asc';  // Default to ascending if no sort parameter is provided
 
-        const Products = await ProductsSevice.getAllProducts(page);
+        // Validate sort parameter
+        if (sort !== 'asc' && sort !== 'desc') {
+            return res.status(400).json({ message: "Invalid sort value. Use 'asc' or 'desc'." });
+        }
+
+        // Fetch products and total count from the service
+        const Products = await ProductsSevice.getAllProducts(page, sort);
         const totalCount = await ProductsSevice.getTotalcount();
+
 
         if (!Products || Products.length === 0) {
             return res.status(404).json({ message: "No Products found" });
@@ -14,7 +22,7 @@ const getProducts = async (req, res) => {
         res.status(200).json({
             Products,
             totalCount,
-            currentPage: page,
+            currentPage: page
         });
     } catch (error) {
         console.error("Error in getProducts:", error);

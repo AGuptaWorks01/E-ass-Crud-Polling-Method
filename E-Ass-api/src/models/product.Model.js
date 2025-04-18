@@ -9,13 +9,14 @@ const tostalProduct = async () => {
 }
 
 
-const getAllproducts = async (page) => {
+const getAllproducts = async (page, sort = 'asc') => {
     try {
         const limit = 10;
         const offset = (page - 1) * limit;
-        console.log("LIMIT:", limit, "OFFSET:", offset); // for debug.
+        // console.log("LIMIT:", limit, "OFFSET:", offset); // for debug.
 
-        const [rows] = await promisePool.query(
+        // const [rows] = await promisePool.query(
+        const query =
             `SELECT 
                 p.id, 
                 p.name, 
@@ -29,9 +30,11 @@ const getAllproducts = async (page) => {
             JOIN categories c ON p.category_id = c.id
             LEFT JOIN product_images pi ON p.id = pi.product_id
             GROUP BY p.id
-            LIMIT ? OFFSET ?`,
-            [limit, offset]
-        );
+            ORDER BY p.price ${sort.toUpperCase()} -- Apply sorting here
+            LIMIT ? OFFSET ?;`;
+        // [limit, offset] // );
+        const [rows] = await promisePool.query(query, [limit, offset])
+
         // Convert comma-separated string to array
         const productsWithImages = rows.map(product => ({
             ...product,
@@ -72,25 +75,6 @@ const checkCategoryExists = async (category_id) => {
     return rows.length > 0;
 };
 
-
-// const putproducts = async (id, name, price, category_id, imagePaths = []) => {
-//     try {
-//         const categoryExists = await checkCategoryExists(category_id);
-//         if (!categoryExists) {
-//             throw new Error(`Category with ID ${category_id} does not exist`);
-//         }
-
-//         const [rows] = await promisePool.execute(
-//             'UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?',
-//             [name, price, category_id, id]
-//         );
-
-//         return rows;
-//     } catch (error) {
-//         console.log("Error updating product:", error);
-//         throw error;
-//     }
-// }
 
 const putproducts = async (id, name, price, category_id, imagePaths = []) => {
     try {
