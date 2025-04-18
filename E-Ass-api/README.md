@@ -50,3 +50,7 @@ Add Category
 > `http://localhost:3100/product/products?page=1&sort=asc`
 > GET (desc)
 > `http://localhost:3100/product/products?page=1&sort=desc`
+
+## Api for Search By Product-Name & Category
+
+`http://localhost:3100/product/products?search=Computer`

@@ -15,9 +15,9 @@ const getTotalcount = async () => {
 
 
 // =================== Get All Product
-const getAllProducts = async (page, sort) => {
+const getAllProducts = async (page, sort, search, category) => {
     try {
-        const rows = await ProductsModel.getAllproducts(page, sort);
+        const rows = await ProductsModel.getAllproducts(page, sort, search, category);
         return rows;
     } catch (error) {
         console.error("Error fetching Products from DB:", error);

@@ -4,6 +4,8 @@ const getProducts = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const sort = req.query.sort || 'asc';  // Default to ascending if no sort parameter is provided
+        const search = req.query.search || '';
+        const category = req.query.category || '';
 
         // Validate sort parameter
         if (sort !== 'asc' && sort !== 'desc') {
@@ -11,7 +13,7 @@ const getProducts = async (req, res) => {
         }
 
         // Fetch products and total count from the service
-        const Products = await ProductsSevice.getAllProducts(page, sort);
+        const Products = await ProductsSevice.getAllProducts(page, sort, search, category);
         const totalCount = await ProductsSevice.getTotalcount();
 
 
@@ -36,7 +38,7 @@ const InsertProducts = async (req, res) => {
         const { name, price, category_id } = req.body
         const files = req.files || [];
         const imagePaths = files.map(file => file.path.replace(/\\/g, '/'));
-        console.log("Path is ", imagePaths);
+        // console.log("Path is ", imagePaths);
 
         if (!name || !price || !category_id) {
             return res.status(400).json({
@@ -48,7 +50,7 @@ const InsertProducts = async (req, res) => {
 
 
         const result = await ProductsSevice.postProducts(name, price, category_id, imagePaths);
-        console.log(result);
+        // console.log(result);
         return res.status(201).json({
             message: "Product created successfully",
             data: result,
@@ -161,8 +163,8 @@ const getProductById = async (req, res) => {
 
 module.exports = {
     getProducts,
+    getProductById,
     InsertProducts,
     EditProducts,
     DeleteProducts,
-    getProductById
 }
