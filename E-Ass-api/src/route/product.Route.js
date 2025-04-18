@@ -11,15 +11,15 @@ const router = express.Router();
 //     EditProducts,
 
 
-router.get("/products", authMiddleware, getProducts);
+router.get("/", authMiddleware, getProducts);
 
-router.get("/products/:id", authMiddleware, getProductById);
+router.get("/:id", authMiddleware, getProductById);
 
-router.post("/products", authMiddleware, upload.array('images', 5), InsertProducts);
+router.post("/", authMiddleware, upload.array('images', 5), InsertProducts);
 
-router.put("/products/:id", authMiddleware, upload.array('images', 5), EditProducts);
+router.put("/:id", authMiddleware, upload.array('images', 5), EditProducts);
 
-router.delete("/products/:id", authMiddleware, DeleteProducts);
+router.delete("/:id", authMiddleware, DeleteProducts);
 
 router.get('/report/download', downloadProductReport);
 
