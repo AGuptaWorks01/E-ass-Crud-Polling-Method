@@ -1,5 +1,7 @@
 const AuthService = require('../services/auth.Service');
 
+
+// Register Method
 const register = async (req, res) => {
     const { email, password } = req.body;
 
@@ -17,6 +19,8 @@ const register = async (req, res) => {
     }
 }
 
+
+// Login Method
 const login = async (req, res) => {
     const { email, password } = req.body;
 
