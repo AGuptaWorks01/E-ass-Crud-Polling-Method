@@ -35,10 +35,10 @@ export class LoginComponent {
   login() {
     this.authService.loginService(this.loginForm.value).subscribe({
       next: (res) => {
-        // this.authService.setLoginStatus(res); // Set login state
-        // this.router.navigate(['/home']);
+        this.authService.setLoginStatus(res); // Set login state
+        this.router.navigate(['/dash-board']);
         alert('Login Sucees');
-        this.loginForm.reset();
+        // this.loginForm.reset();
       },
       error: () => {
         alert('Invalid email or password!');
