@@ -135,17 +135,28 @@ const DeleteProducts = async (req, res) => {
     }
 }
 
-
-const TruncateData = async (req, res) => {
+const getProductById = async (req, res) => {
     try {
-        const result = await ProductsSevice.TruncateData();
-        return res.status(200).json(result)
+        const id = req.params.id;
+        if (!id) {
+            return res.status(400).json({ message: "Product ID is required" });
+        }
+        const product = await ProductsSevice.getProductById(id);
 
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        res.status(200).json(product);
     } catch (error) {
-        console.log("error in truncate controller", error);
-        throw error
+        console.error("Error fetching product by ID:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message
+        });
     }
 }
+
 
 
 module.exports = {
@@ -153,5 +164,5 @@ module.exports = {
     InsertProducts,
     EditProducts,
     DeleteProducts,
-    TruncateData,
+    getProductById
 }

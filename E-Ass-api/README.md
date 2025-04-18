@@ -6,8 +6,8 @@ Register Api
 > LOGIN
 > `http://localhost:3100/auth/login`
 
-> Api for Pagination
-> `http://localhost:3100/product/products?page=1` > `http://localhost:3100/product/products?page=2`
+> Api for Pagination with Sorting
+> `http://localhost:3100/product/products?page=1&sort=asc` > `http://localhost:3100/product/products?page=2&sort=desc`
 
 Adding Category
 POST
@@ -24,7 +24,10 @@ POST (Add new product)
 > GET (Get All product)
 > `http://localhost:3100/product/products`
 
-> PUT
+> GET (Get product By Id)
+> `http://localhost:3100/product/products/:id`
+
+> PUT (Update product details)
 > `http://localhost:3100/product/products/:is`
 
 > DELETE
@@ -33,6 +36,13 @@ POST (Add new product)
 Add Category
 
 > ``
+
+## Api for pagination:
+
+> GET (asc)
+> `http://localhost:3100/product/products?page=1`
+> GET (desc)
+> `http://localhost:3100/product/products?page=2`
 
 ## Api for Price Sort:
 

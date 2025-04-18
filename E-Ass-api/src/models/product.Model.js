@@ -9,7 +9,7 @@ const tostalProduct = async () => {
 }
 
 
-const getAllproducts = async (page, sort = 'asc') => {
+const getAllproducts = async (page, sort='asc') => {
     try {
         const limit = 10;
         const offset = (page - 1) * limit;
@@ -125,20 +125,6 @@ const deleteproducts = async (id) => {
 
 
 
-const TruncateData = async () => {
-    try {
-
-        const result = await promisePool.execute("TRUNCATE TABLE products");
-        return result;
-
-    } catch (error) {
-        console.log("error in trucate model", error);
-        throw error;
-    }
-}
-
-
-
 // Insert-Image
 const InsertProductImage = async (productId, imageUrls) => {
     try {
@@ -183,7 +169,6 @@ module.exports = {
     postproducts,
     putproducts,
     deleteproducts,
-    TruncateData,
     tostalProduct,
     InsertProductImage,
     deleteProductImages, getProductById

@@ -25,6 +25,18 @@ const getAllProducts = async (page, sort) => {
     }
 };
 
+
+// get a single productById
+const getProductById = async (id) => {
+    try {
+        const product = await ProductsModel.getProductById(id)
+        return product;
+    } catch (error) {
+        console.error("Error getting product by ID:", error);
+        throw error;
+    }
+}
+
 // =================== Add Product
 const postProducts = async (name, price, category_id, imagePaths = []) => {
     try {
@@ -63,14 +75,14 @@ const putProducts = async (id, name, price, category_id, imagePaths = []) => {
         }
 
         await ProductsModel.putproducts(id, name, price, category_id);
-        
+
         await ProductsModel.deleteProductImages(id);
         if (imagePaths.length > 0) {
             await ProductsModel.InsertProductImage(id, imagePaths);
         }
         return { id, name, price, category_id, images: imagePaths };
     } catch (error) {
-        console.log("edit the Products",error);
+        console.log("edit the Products", error);
         throw error;
     }
 }
@@ -104,23 +116,11 @@ const deleteProducts = async (id) => {
 };
 
 
-const TruncateData = async () => {
-    try {
-        const result = await ProductsModel.TruncateData();
-        return result;
-
-    } catch (error) {
-        console.log("error in trucate service", error);
-        throw error
-    }
-}
-
-
 module.exports = {
     getAllProducts,
+    getProductById,
     postProducts,
     putProducts,
     deleteProducts,
-    TruncateData,
     getTotalcount
 };
