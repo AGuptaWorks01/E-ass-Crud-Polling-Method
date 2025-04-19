@@ -1,35 +1,42 @@
 <nav class="bg-blue-900 text-white p-3">
   <div class="container mx-auto flex justify-between items-center">
     <!-- Brand -->
-    <a class="text-xl font-bold flex items-center gap-2" routerLink="/dash-board">
+    <a
+      class="text-xl font-bold flex items-center gap-2"
+      routerLink="/dash-board"
+    >
       <i class="fas fa-graduation-cap text-blue-300"></i>
       E-Com
     </a>
 
-    <!-- Login & Register -->
+    <!-- Menu Items -->
     <div class="flex space-x-2">
-      <a
-        routerLink="/login"
-        class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
-        >Login</a
-      >
-      <a
-        routerLink="/register"
-        class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
-        >Register</a
-      >
-      <a
-        routerLink="/producList"
-        class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
-        >ProducList</a
-      >
-      <button
-        type="button"
-        (click)="logout()"
-        class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
-      >
-        logout
-      </button>
+      <ng-container *ngIf="!isLoggedIn">
+        <a
+          routerLink="/login"
+          class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
+          >Login</a
+        >
+        <a
+          routerLink="/register"
+          class="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
+          >Register</a
+        >
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <a
+          routerLink="/producList"
+          class="bg-blue-600 px-2 py-1 rounded hover:bg-blue-700"
+          >ProductList</a
+        >
+        <button
+          (click)="logout()"
+          class="bg-red-600 px-1 py-1 rounded hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </ng-container>
     </div>
   </div>
 </nav>

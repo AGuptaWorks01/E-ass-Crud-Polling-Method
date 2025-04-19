@@ -11,7 +11,7 @@ export class ProductService {
   private http = inject(HttpClient);
 
   private apiUrl = `${environment.baseUrl}/products`;
-  constructor() {}
+  constructor() { }
 
   // Generic HTTP method to handle any API call
   private makeRequest<T>(

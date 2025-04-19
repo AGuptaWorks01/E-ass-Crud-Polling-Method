@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashBoardComponent } from './Module/dash-board/dash-board.component';
+import { authGuard } from './AuthGuard/auth.guard';
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: 'dash-board',
     component: DashBoardComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'login',
@@ -29,6 +31,7 @@ export const routes: Routes = [
       import('./Module/product-list/product-list.component').then(
         (m) => m.ProductListComponent
       ),
+    canActivate: [authGuard]
   },
   {
     path: 'add-edit-dlt',
@@ -36,6 +39,7 @@ export const routes: Routes = [
       import('./Module/add-edit-dlt/add-edit-dlt.component').then(
         (m) => m.AddEditDltComponent
       ),
+    canActivate: [authGuard]
   },
   {
     path: 'add-edit-dlt/:id',
@@ -43,5 +47,14 @@ export const routes: Routes = [
       import('./Module/add-edit-dlt/add-edit-dlt.component').then(
         (m) => m.AddEditDltComponent
       ),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'category',
+    loadComponent: () =>
+      import('./Module/category/category.component').then(
+        (m) => m.CategoryComponent
+      ),
+    canActivate: [authGuard]
   },
 ];

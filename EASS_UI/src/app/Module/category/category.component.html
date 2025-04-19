@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <h3 class="mb-4">Category Management</h3>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="mb-4">
+    <div class="form-group">
+      <input
+        formControlName="name"
+        class="form-control"
+        placeholder="Enter category name"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2" [disabled]="categoryForm.invalid">
+      {{ selectedCategory ? 'Update' : 'Add' }} Category
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary mt-2 ms-2"
+      *ngIf="selectedCategory"
+      (click)="cancelEdit()"
+    >
+      Cancel
+    </button>
+  </form>
+
+  <table class="table table-bordered table-hover text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th style="width: 180px">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td>
+          <button class="btn btn-sm btn-info me-2" (click)="editCategory(category)">
+            <i class="bi bi-pencil"></i> Edit
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteCategory(category.id)">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="categories.length === 0" class="text-center text-muted">
+    No categories found.
+  </div>
+</div>

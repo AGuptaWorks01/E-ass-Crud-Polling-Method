@@ -37,7 +37,7 @@ export class LoginComponent {
       next: (res) => {
         this.authService.setLoginStatus(res); // Set login state
         this.router.navigate(['/dash-board']);
-        alert('Login Sucees');
+        // alert('Login Successfull');
         // this.loginForm.reset();
       },
       error: () => {

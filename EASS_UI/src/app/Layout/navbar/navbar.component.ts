@@ -14,44 +14,20 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent {
   authService = inject(AuthService);
   router = inject(Router);
-  isNavbarOpen = false; // Track whether the navbar is open or closed
+  // isNavbarOpen = false; // Track whether the navbar is open or closed
   isLoggedIn = false; // Track login status
-  isDropdownOpen = false;
   private loginStatusSub: Subscription = new Subscription(); // Subscription to login status
 
-  constructor(private eRef: ElementRef) {}
+  constructor() { }
 
   ngOnInit() {
-    // Subscribe to isLoggedIn$ to get the latest login status
-    // this.loginStatusSub = this.authService.isLoggedIn$.subscribe(
-    //   (status: boolean) => {
-    //     this.isLoggedIn = status;
-    //   }
-    // );
+    this.loginStatusSub = this.authService.isLoggedIn$.subscribe((status: boolean) => {
+      this.isLoggedIn = status;
+    });
   }
 
   ngOnDestroy() {
-    // Clean up the subscription to avoid memory leaks
-    if (this.loginStatusSub) {
-      this.loginStatusSub.unsubscribe();
-    }
-  }
-
-  // Toggle the navbar open/close state
-  toggleNavbar(event: Event): void {
-    event.stopPropagation();
-    this.isNavbarOpen = !this.isNavbarOpen;
-  }
-
-  toggleDropdown(event: Event) {
-    event.stopPropagation();
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  // Close the navbar when a menu item is clicked
-  closeNavbar(): void {
-    this.isNavbarOpen = false;
-    this.isDropdownOpen = false;
+    this.loginStatusSub.unsubscribe();
   }
 
   logout() {
@@ -59,10 +35,4 @@ export class NavbarComponent {
     this.router.navigate(['/login']); // Redirect to login page after logout
   }
 
-  @HostListener('document:click', ['$event'])
-  closeNavbarOutside(event: Event) {
-    if (!this.eRef.nativeElement.contains(event.target)) {
-      this.closeNavbar();
-    }
-  }
 }

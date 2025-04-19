@@ -22,7 +22,6 @@ export class AddEditDltComponent {
   productId: number | null = null;
   productForm: FormGroup;
   selectedFiles: File[] = [];
-  skuExistError: boolean = false;
   imagePreviews: string[] = [];
   categories: Category[] = [];
 
@@ -106,11 +105,8 @@ export class AddEditDltComponent {
           this.router.navigate(['/']);
         },
         (error) => {
-          if (error.status === 400 && error.error.message === 'SKU already exists') {
-            this.skuExistError = true;
-          } else {
-            alert('An error occurred while updating the product');
-          }
+          console.log("Error", error);
+          alert('An error occurred while updating the product');
         }
       );
     } else {
