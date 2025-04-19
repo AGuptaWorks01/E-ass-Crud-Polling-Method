@@ -18,6 +18,7 @@ export class ProductListComponent {
   private router = inject(Router);
 
   ngOnInit(): void {
+    
     this.loadProducts();
   }
 

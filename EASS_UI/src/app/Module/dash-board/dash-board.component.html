@@ -1,8 +1,19 @@
 <div class="container mt-4">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-    <div class="col" *ngFor="let product of products">
-      <div class="card h-100 shadow-sm">
 
+  <!-- Search Box -->
+  <div class="mb-4">
+    <input
+      [(ngModel)]="searchTerm"
+      (input)="filterProducts()"
+      class="form-control"
+      placeholder="Search by product or category"
+    />
+  </div>
+
+  <!-- Product Cards -->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let product of filteredProducts">
+      <div class="card h-100 shadow-sm">
         <!-- Image Carousel -->
         <div class="card-img-top p-2">
           <div id="carouselProduct{{ product.id }}" class="carousel slide" data-bs-ride="carousel">
@@ -20,7 +31,6 @@
                 />
               </div>
             </div>
-
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carouselProduct' + product.id" data-bs-slide="prev">
               <span class="carousel-control-prev-icon"></span>
@@ -40,64 +50,15 @@
           </p>
         </div>
 
-        <!-- Optional: Action Button -->
         <div class="card-footer text-center">
           <button class="btn btn-primary w-100" (click)="viewProduct(product)">View</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-
-<div class="text text-center text-danger mt-3" *ngIf="products.length === 0">
-  <h1>No products found!</h1>
-</div>
-<!-- Product View Modal -->
-<div id="productModal" class="modal fade" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title">{{ selectedProduct.name }}</h5>
-        <button type="button" class="btn-close" (click)="closeModal()"></button>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <!-- Image Carousel -->
-        <div id="carouselModalView" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div *ngFor="let img of selectedProduct.images; let i = index" class="carousel-item" [class.active]="i === 0">
-              <img
-                [src]="getImageUrl(img)"
-                class="d-block w-100"
-                style="height: 400px; object-fit: cover"
-                alt="Product Image"
-              />
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselModalView" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselModalView" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-          </button>
-        </div>
-
-        <!-- Product Details -->
-        <div class="mt-4 text-center">
-          <p><strong>Category:</strong> {{ selectedProduct.category_name }}</p>
-          <p><strong>Price:</strong> ₹{{ selectedProduct.price }}</p>
-        </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="closeModal()">Close</button>
-      </div>
-
-    </div>
+  <!-- No products message -->
+  <div class="text text-center text-danger mt-3" *ngIf="filteredProducts.length === 0">
+    <h1>No products found!</h1>
   </div>
 </div>

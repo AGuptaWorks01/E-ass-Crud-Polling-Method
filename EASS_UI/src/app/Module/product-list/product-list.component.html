@@ -1,9 +1,10 @@
-<div class="container">
-  <div class="card mt-5 shadow-lg">
+<div class="container mt-5">
+
+  <div class="card shadow-lg">
     <div class="card-header bg-primary flex justify-between items-center">
       <div class="d-flex flex-row">
         <div>
-          <h4 class="m-1 text-white">Product List</h4>
+          <h2 class="m-1 text-white">Product List</h2>
         </div>
         <div class="ms-auto">
           <span class="btn btn-primary me-2 rounded" routerLink="/add-edit-dlt">
@@ -31,12 +32,11 @@
         </thead>
 
         <tbody>
-          @for (product of products; track product.id) {
-          <tr class="align-middle text-center">
+          <tr *ngFor="let product of products" class="align-middle text-center">
             <!-- Image Column -->
             <td
-              class="d-flex justify-content-center align-items-center flex-wrap"
-              style="min-height: 90px"
+              class="d-flex justify-content-center align-items-center flex-wrap p-1"
+              style="min-height: 60px"
             >
               <ng-container *ngIf="product.images?.length > 0">
                 <img
@@ -44,7 +44,7 @@
                   [src]="getImageUrl(image)"
                   alt="{{ product.name }}"
                   class="img-thumbnail m-1"
-                  style="width: 80px; height: 80px; object-fit: cover"
+                  style="width: 60px; height: 60px; object-fit: cover"
                 />
               </ng-container>
             </td>
@@ -74,8 +74,6 @@
               </button>
             </td>
           </tr>
-
-          }
         </tbody>
       </table>
 

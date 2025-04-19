@@ -1,0 +1,16 @@
+table.table tr {
+  height: 50px;  /* Reduces row height */
+}
+
+table.table td,
+table.table th {
+  padding-top: 6px; /* Reduces top padding */
+  padding-bottom: 6px; /* Reduces bottom padding */
+  vertical-align: middle; /* Aligns content in the center */
+}
+
+img.img-thumbnail {
+  width: 60px; /* Sets image width */
+  height: 60px; /* Sets image height */
+  object-fit: cover; /* Ensures the image fits well within the box */
+}

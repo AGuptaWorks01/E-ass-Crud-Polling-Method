@@ -1,24 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../Environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  // using http for HTTP Methods
   private http = inject(HttpClient);
-
   private apiUrl = `${environment.baseUrl}/products`;
+  private reportUrl = `${environment.baseUrl}/products/report/download`;
+
   constructor() { }
 
-  // Generic HTTP method to handle any API call
-  private makeRequest<T>(
-    method: string,
-    url: string,
-    body?: any
-  ): Observable<T> {
+  private makeRequest<T>(method: string, url: string, body?: any): Observable<T> {
     switch (method) {
       case 'GET':
         return this.http.get<T>(url);
@@ -33,28 +28,37 @@ export class ProductService {
     }
   }
 
-  // get all product method
+  // Get all products
   getProducts(): Observable<any> {
     return this.makeRequest('GET', this.apiUrl);
   }
 
-  // get by id each product
   getProductById(id: number): Observable<any> {
     return this.makeRequest('GET', `${this.apiUrl}/${id}`);
   }
 
-  // for adding new product
   addProduct(product: any): Observable<any> {
     return this.makeRequest('POST', this.apiUrl, product);
   }
 
-  // for updating existing product
   updateProduct(id: number, product: any): Observable<any> {
     return this.makeRequest('PUT', `${this.apiUrl}/${id}`, product);
   }
 
-  // delete product mehtod
   deleteProduct(id: number): Observable<any> {
     return this.makeRequest('DELETE', `${this.apiUrl}/${id}`);
+  }
+
+  // Report Download Method
+  downloadReport(format: 'csv' | 'xlsx'): Observable<Blob> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      ...(token && { Authorization: `Bearer ${token}` })
+    });
+
+    return this.http.get(`${this.reportUrl}?format=${format}`, {
+      headers: headers,
+      responseType: 'blob',
+    });
   }
 }

@@ -21,7 +21,7 @@ router.put("/:id", authMiddleware, upload.array('images', 5), EditProducts);
 
 router.delete("/:id", authMiddleware, DeleteProducts);
 
-router.get('/report/download', downloadProductReport);
+router.get('/report/download', authMiddleware, downloadProductReport);
 
 module.exports = router
 
