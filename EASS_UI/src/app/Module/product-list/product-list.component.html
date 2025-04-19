@@ -25,7 +25,11 @@
             <th scope="col">Image</th>
             <th scope="col">Product Name</th>
             <th scope="col">Category</th>
-            <th scope="col">Price</th>
+            <th scope="col">
+              Price
+              <button class="btn btn-sm btn-outline-primary ms-2" (click)="sortByPrice('asc')">↑</button>
+              <button class="btn btn-sm btn-outline-primary ms-1" (click)="sortByPrice('desc')">↓</button>
+            </th>
             <th scope="col">Action</th>
           </tr>
         </thead>

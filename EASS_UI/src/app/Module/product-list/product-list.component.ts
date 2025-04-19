@@ -16,6 +16,7 @@ export class ProductListComponent {
   currentPage: number = 1; // Current page number
   totalPages: number = 1; // Total number of pages
   pageSize: number = 10; // Number of items per page
+  originalProducts: any = []; // To hold the original fetched products for sorting
 
   private productService = inject(ProductService);
   private router = inject(Router);
@@ -29,9 +30,10 @@ export class ProductListComponent {
     this.productService.getProducts(page).subscribe({
       next: (data) => {
         this.products = data.Products; // <-- Assign the fetched products
+        this.originalProducts = [...this.products]; // Keep a copy for sorting
         this.totalPages = data.totalCount; // Assuming totalCount is the total number of products
         this.currentPage = page; // Update the current page
-        console.log('Products loaded:', this.products);
+        // console.log('Products loaded:', this.products);
       },
       error: (err) => {
         console.error('Failed to load products', err);
@@ -50,6 +52,17 @@ export class ProductListComponent {
     }
     this.loadProducts(page); // Reload products for the new page
   }
+
+
+  // Sorting products by price (ascending or descending)
+  sortByPrice(order: 'asc' | 'desc'): void {
+    if (order === 'asc') {
+      this.products = [...this.originalProducts].sort((a, b) => a.price - b.price);
+    } else if (order === 'desc') {
+      this.products = [...this.originalProducts].sort((a, b) => b.price - a.price);
+    }
+  }
+  
 
   editProduct(productId: number | undefined): void {
     if (productId !== undefined) {
