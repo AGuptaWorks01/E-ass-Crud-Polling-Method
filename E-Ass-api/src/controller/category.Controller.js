@@ -113,26 +113,9 @@ const DeleteCategory = async (req, res) => {
 }
 
 
-const TruncateData = async (req, res) => {
-    try {
-
-        const result = await categorySevice.TruncateData();
-        return res.status(200).json({
-            message: "All categories have been successfully removed.",
-            data: result
-        })
-
-    } catch (error) {
-        console.log("Error in truncate controller", error);
-        res.status(500).json({ message: "Error truncating categories", error: error.message });
-    }
-}
-
-
 module.exports = {
     getcategories,
     InsertCategory,
     EditCategory,
     DeleteCategory,
-    TruncateData,
 }

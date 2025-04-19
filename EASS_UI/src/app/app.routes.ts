@@ -23,4 +23,18 @@ export const routes: Routes = [
         (m) => m.RegisterComponent
       ),
   },
+  {
+    path: 'producList',
+    loadComponent: () =>
+      import('./Module/product-list/product-list.component').then(
+        (m) => m.ProductListComponent
+      ),
+  },
+  {
+    path: 'add-edit-dlt',
+    loadComponent: () =>
+      import('./Module/add-edit-dlt/add-edit-dlt.component').then(
+        (m) => m.AddEditDltComponent
+      ),
+  },
 ];

@@ -12,6 +12,4 @@ router.put("/:id", authMiddleware, categoryController.EditCategory);
 
 router.delete("/:id", authMiddleware, categoryController.DeleteCategory);
 
-router.delete("/", authMiddleware, categoryController.TruncateData);
-
 module.exports = router

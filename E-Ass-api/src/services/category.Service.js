@@ -74,24 +74,11 @@ const deleteCategory = async (id) => {
 }
 
 
-const TruncateData = async () => {
-    try {
-
-        const result = await categoryModel.TruncateData();
-        return result;
-
-    } catch (error) {
-        console.log("error in trucate service", error);
-        throw error
-    }
-}
-
 
 module.exports = {
     getAllCategory,
     postCategory,
     putCategory,
     deleteCategory,
-    TruncateData,
     getTotalcount,
 };

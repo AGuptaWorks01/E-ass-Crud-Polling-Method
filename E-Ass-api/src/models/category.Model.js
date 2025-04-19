@@ -71,18 +71,6 @@ const deleteCategory = async (id) => {
     }
 }
 
-// Truncate category table
-const TruncateData = async () => {
-    try {
-
-        const result = await promisePool.execute("TRUNCATE TABLE categories");
-        return result;
-
-    } catch (error) {
-        console.log("error in trucate model", error);
-        throw error;
-    }
-}
 
 
 module.exports = {
@@ -90,6 +78,5 @@ module.exports = {
     postCategory,
     putCategory,
     deleteCategory,
-    TruncateData,
     tostalCategory
 };
