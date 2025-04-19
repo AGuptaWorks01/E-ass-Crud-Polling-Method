@@ -37,4 +37,11 @@ export const routes: Routes = [
         (m) => m.AddEditDltComponent
       ),
   },
+  {
+    path: 'add-edit-dlt/:id',
+    loadComponent: () =>
+      import('./Module/add-edit-dlt/add-edit-dlt.component').then(
+        (m) => m.AddEditDltComponent
+      ),
+  },
 ];

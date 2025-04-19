@@ -3,22 +3,23 @@ import { environment } from '../../Environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
+// Define Category interface
+export interface Category {
+    id: number;
+    name: string;
+}
+
 @Injectable({
     providedIn: 'root',
 })
 export class CategoryService {
-    // using http for HTTP Methods
     private http = inject(HttpClient);
-
     private apiUrl = `${environment.baseUrl}/categories`;
+
     constructor() { }
 
     // Generic HTTP method to handle any API call
-    private makeRequest<T>(
-        method: string,
-        url: string,
-        body?: any
-    ): Observable<T> {
+    private makeRequest<T>(method: string, url: string, body?: any): Observable<T> {
         switch (method) {
             case 'GET':
                 return this.http.get<T>(url);
@@ -33,28 +34,23 @@ export class CategoryService {
         }
     }
 
-    // get all product method
-    getCategory(): Observable<any> {
+    // Get all categories method
+    getCategory(): Observable<{ categories: Category[]; totalCount: number; currentPage: number }> {
         return this.makeRequest('GET', this.apiUrl);
     }
 
-    // get by id each product
-    getProductById(id: number): Observable<any> {
-        return this.makeRequest('GET', `${this.apiUrl}/${id}`);
+    // Add new Category
+    addCategory(category: Category): Observable<any> {
+        return this.makeRequest('POST', this.apiUrl, category);
     }
 
-    // for adding new product
-    addProduct(product: any): Observable<any> {
-        return this.makeRequest('POST', this.apiUrl, product);
+    // Update existing Category
+    updateCategory(id: number, category: Category): Observable<any> {
+        return this.makeRequest('PUT', `${this.apiUrl}/${id}`, category);
     }
 
-    // for updating existing product
-    updateProduct(id: number, product: any): Observable<any> {
-        return this.makeRequest('PUT', `${this.apiUrl}/${id}`, product);
-    }
-
-    // delete product mehtod
-    deleteProduct(id: number): Observable<any> {
+    // Delete Category
+    deleteCategory(id: number): Observable<any> {
         return this.makeRequest('DELETE', `${this.apiUrl}/${id}`);
     }
 }

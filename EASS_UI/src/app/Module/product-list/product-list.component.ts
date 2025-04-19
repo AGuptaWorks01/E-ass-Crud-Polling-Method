@@ -42,7 +42,7 @@ export class ProductListComponent {
 
   editProduct(productId: number | undefined): void {
     if (productId !== undefined) {
-      this.router.navigate(['/addProduct', productId]);
+      this.router.navigate(['/add-edit-dlt', productId]);
       // console.log('Editing Product ID:', productId);
     } else {
       console.error('Product ID is undefined');

@@ -3,6 +3,7 @@ import { ProductService } from '../../Service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Category, CategoryService } from '../../Service/category.service';
 
 @Component({
   selector: 'app-add-edit-dlt',
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AddEditDltComponent {
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -22,7 +24,7 @@ export class AddEditDltComponent {
   selectedFiles: File[] = [];
   skuExistError: boolean = false;
   imagePreviews: string[] = [];
-  categories: any[] = [];
+  categories: Category[] = [];
 
   constructor() {
     this.productForm = this.fb.group({
@@ -46,8 +48,9 @@ export class AddEditDltComponent {
   }
 
   loadCategories(): void {
-    this.productService.getCategories().subscribe((data) => {
-      this.categories = data;
+    this.categoryService.getCategory().subscribe((res) => {
+      this.categories = res.categories;
+      console.log("Category List", this.categories);
     });
   }
 
@@ -81,7 +84,7 @@ export class AddEditDltComponent {
     const formData = new FormData();
     formData.append('name', this.productForm.get('name')?.value);
     formData.append('price', this.productForm.get('price')?.value.toString());
-    formData.append('category', this.productForm.get('category')?.value);
+    formData.append('category_id', this.productForm.get('category')?.value);
 
     this.selectedFiles.forEach((file) => {
       formData.append('images', file);
@@ -94,6 +97,7 @@ export class AddEditDltComponent {
     if (this.productForm.invalid) return;
 
     const formData = this.prepareFormData();
+    console.log("add form data", formData);
 
     if (this.productId) {
       this.productService.updateProduct(this.productId, formData).subscribe(
@@ -116,13 +120,8 @@ export class AddEditDltComponent {
           this.router.navigate(['/']);
         },
         (error) => {
-          if (error.status === 400 && error.error.message === 'SKU already exists') {
-            this.skuExistError = true;
-          } else {
-            alert('An error occurred while adding the product');
-          }
-        }
-      );
+          alert('An error occurred while adding the product');
+        })
     }
   }
 
