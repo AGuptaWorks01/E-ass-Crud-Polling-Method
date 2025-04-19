@@ -9,42 +9,51 @@ import { environment } from '../../../Environments/environment';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent {
-  products: any = []; // hold orginal data
+  products: any = []; // hold original data
+  currentPage: number = 1; // Current page number
+  totalPages: number = 1; // Total number of pages
+  pageSize: number = 10; // Number of items per page
 
   private productService = inject(ProductService);
   private router = inject(Router);
 
   ngOnInit(): void {
-    
-    this.loadProducts();
+    this.loadProducts(this.currentPage); // Load products for the first page
   }
 
+  // Method to fetch products with pagination
+  loadProducts(page: number): void {
+    this.productService.getProducts(page).subscribe({
+      next: (data) => {
+        this.products = data.Products; // <-- Assign the fetched products
+        this.totalPages = data.totalCount; // Assuming totalCount is the total number of products
+        this.currentPage = page; // Update the current page
+        console.log('Products loaded:', this.products);
+      },
+      error: (err) => {
+        console.error('Failed to load products', err);
+      },
+    });
+  }
 
   getImageUrl(imagePath: string): string {
     return `${environment.baseUrl}/${imagePath}`;
   }
 
-
-  loadProducts(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data.Products; // <-- Assign the fetched products
-        console.log("Products loaded:", this.products);
-      },
-      error: (err) => {
-        console.error("Failed to load products", err);
-      }
-    });
+  // Handle page change
+  changePage(page: number): void {
+    if (page < 1 || page > this.totalPages) {
+      return; // Do nothing if the page number is out of bounds
+    }
+    this.loadProducts(page); // Reload products for the new page
   }
-
 
   editProduct(productId: number | undefined): void {
     if (productId !== undefined) {
       this.router.navigate(['/add-edit-dlt', productId]);
-      // console.log('Editing Product ID:', productId);
     } else {
       console.error('Product ID is undefined');
     }
@@ -55,7 +64,7 @@ export class ProductListComponent {
       this.productService.deleteProduct(productId).subscribe(
         () => {
           this.products = this.products.filter(
-            (product: { id: number; }) => product.id !== productId
+            (product: { id: number }) => product.id !== productId
           );
           alert('Product deleted successfully!');
         },

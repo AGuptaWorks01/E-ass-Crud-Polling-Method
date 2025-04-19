@@ -29,8 +29,8 @@ export class ProductService {
   }
 
   // Get all products
-  getProducts(): Observable<any> {
-    return this.makeRequest('GET', this.apiUrl);
+  getProducts(page: number = 1): Observable<any> {
+    return this.makeRequest('GET', `${this.apiUrl}?page=${page}`);
   }
 
   getProductById(id: number): Observable<any> {

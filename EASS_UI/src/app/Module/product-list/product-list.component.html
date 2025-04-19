@@ -1,5 +1,4 @@
 <div class="container mt-5">
-
   <div class="card shadow-lg">
     <div class="card-header bg-primary flex justify-between items-center">
       <div class="d-flex flex-row">
@@ -33,11 +32,7 @@
 
         <tbody>
           <tr *ngFor="let product of products" class="align-middle text-center">
-            <!-- Image Column -->
-            <td
-              class="d-flex justify-content-center align-items-center flex-wrap p-1"
-              style="min-height: 60px"
-            >
+            <td class="d-flex justify-content-center align-items-center flex-wrap p-1" style="min-height: 60px">
               <ng-container *ngIf="product.images?.length > 0">
                 <img
                   *ngFor="let image of product.images"
@@ -48,28 +43,14 @@
                 />
               </ng-container>
             </td>
-
-            <!-- Product Name -->
             <td>{{ product.name }}</td>
-
-            <!-- Category -->
             <td>{{ product.category_name }}</td>
-
-            <!-- Price -->
             <td>₹{{ product.price }}</td>
-
-            <!-- Action Buttons -->
             <td>
-              <button
-                class="btn btn-sm btn-info me-2"
-                (click)="editProduct(product.id)"
-              >
+              <button class="btn btn-sm btn-info me-2" (click)="editProduct(product.id)">
                 <i class="bi bi-pencil"></i> Edit
               </button>
-              <button
-                class="btn btn-sm btn-danger"
-                (click)="deleteProduct(product.id)"
-              >
+              <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">
                 <i class="bi bi-trash"></i> Delete
               </button>
             </td>
@@ -77,11 +58,29 @@
         </tbody>
       </table>
 
-      <div
-        class="text text-center text-danger mt-3"
-        *ngIf="products.length === 0"
-      >
+      <div class="text text-center text-danger mt-3" *ngIf="products.length === 0">
         <h5>No Products Found!</h5>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls text-center mt-4">
+        <button
+          class="btn btn-outline-primary"
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
+          Previous
+        </button>
+        <span class="mx-3">
+          Page {{ currentPage }} of {{ totalPages }}
+        </span>
+        <button
+          class="btn btn-outline-primary"
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>

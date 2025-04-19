@@ -1,15 +1,4 @@
 <div class="container mt-4">
-
-  <!-- Search Box -->
-  <div class="mb-4">
-    <input
-      [(ngModel)]="searchTerm"
-      (input)="filterProducts()"
-      class="form-control"
-      placeholder="Search by product or category"
-    />
-  </div>
-
   <!-- Product Cards -->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     <div class="col" *ngFor="let product of filteredProducts">
@@ -18,17 +7,8 @@
         <div class="card-img-top p-2">
           <div id="carouselProduct{{ product.id }}" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <div
-                *ngFor="let image of product.images; let i = index"
-                class="carousel-item"
-                [class.active]="i === 0"
-              >
-                <img
-                  [src]="getImageUrl(image)"
-                  class="d-block w-100"
-                  alt="{{ product.name }} Image"
-                  style="height: 200px; object-fit: cover"
-                />
+              <div *ngFor="let image of product.images; let i = index" class="carousel-item" [class.active]="i === 0">
+                <img [src]="getImageUrl(image)" class="d-block w-100" alt="{{ product.name }} Image" style="height: 200px; object-fit: cover"/>
               </div>
             </div>
             <!-- Carousel Controls -->
@@ -60,5 +40,14 @@
   <!-- No products message -->
   <div class="text text-center text-danger mt-3" *ngIf="filteredProducts.length === 0">
     <h1>No products found!</h1>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-secondary me-2" (click)="changePage(currentPage - 1)" [disabled]="currentPage <= 1">Previous</button>
+    <span class="d-flex align-items-center">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <button class="btn btn-secondary ms-2" (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages">Next</button>
   </div>
 </div>
