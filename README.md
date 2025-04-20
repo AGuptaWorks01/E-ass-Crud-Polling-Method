@@ -5,12 +5,6 @@ This project is a full-stack web application built using **Angular**, **Node.js 
 
 ---
 
-## 🎬 Demo Video
-
-[Watch Demo Video](https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/raw/main/demo.mp4)
-
----
-
 ## 🚀 Tech Stack
 
 - **Frontend**: Angular
