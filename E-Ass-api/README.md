@@ -11,10 +11,13 @@ Register Api
 
 Adding Category
 POST
-
 > `http://localhost:3100/api/categories`
 > GET
 > `http://localhost:3100/api/categories`
+> PUT 
+> `http://localhost:3100/api/categories/:id`
+> Delete
+> `http://localhost:3100/api/categories/:id`
 
 Adding Product
 POST (Add new product)
@@ -33,9 +36,6 @@ POST (Add new product)
 > DELETE
 > `http://localhost:3100/api/products/:id`
 
-Add categories
-
-> ``
 
 ## Api for pagination:
 
