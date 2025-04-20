@@ -2,6 +2,22 @@
 
 This project is a full-stack web application built using **Angular**, **Node.js (Express)**, and **MySQL**, designed as part of a technical assessment to evaluate full-stack development skills. It supports user authentication, product and category management, server-side pagination, sorting, searching, and product report downloads in CSV/XLSX format.
 
+
+---
+
+## 🎬 Demo Video
+
+You can watch the demo video of the project here:
+
+[Demo Video](https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/blob/main/demo.mp4)
+
+Alternatively, you can view the demo embedded below:
+
+<video width="320" height="240" controls>
+  <source src="https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/raw/main/demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ---
 
 ## 🚀 Tech Stack
@@ -91,80 +107,115 @@ CREATE TABLE `product_images` (
 
 ---
 ---
-
 ## 📬 API Endpoints
 
 ### ✅ Authentication
 
-| Method | Endpoint              | Description               |
-|--------|-----------------------|---------------------------|
-| POST   | `/api/auth/register`  | Register a new user       |
-| POST   | `/api/auth/login`     | Login and receive a JWT   |
-
----
+| Method | Endpoint                      | Description                          |
+|--------|-------------------------------|--------------------------------------|
+| POST   | /api/auth/register             | Register a new user                  |
+| POST   | /api/auth/login                | Login and receive a JWT              |
 
 ### 📁 Category Management
 
-| Method | Endpoint                    | Description               |
-|--------|-----------------------------|---------------------------|
-| POST   | `/api/categories`           | Add new category          |
-| GET    | `/api/categories`           | Get all categories        |
-| PUT    | `/api/categories/:id`       | Update category by ID     |
-| DELETE | `/api/categories/:id`       | Delete category by ID     |
-
----
+| Method | Endpoint                      | Description                          |
+|--------|-------------------------------|--------------------------------------|
+| POST   | /api/categories                | Add new category                     |
+| GET    | /api/categories                | Get all categories                   |
+| PUT    | /api/categories/:id            | Update category by ID                |
+| DELETE | /api/categories/:id            | Delete category by ID                |
 
 ### 📦 Product Management
 
-| Method | Endpoint                     | Description               |
-|--------|------------------------------|---------------------------|
-| POST   | `/api/products`              | Add new product           |
-| GET    | `/api/products`              | Get all products          |
-| GET    | `/api/products/:id`          | Get product by ID         |
-| PUT    | `/api/products/:id`          | Update product by ID      |
-| DELETE | `/api/products/:id`          | Delete product by ID      |
+| Method | Endpoint                      | Description                          |
+|--------|-------------------------------|--------------------------------------|
+| POST   | /api/products                  | Add new product                      |
+| GET    | /api/products                  | Get all products                     |
+| GET    | /api/products/:id              | Get product by ID                    |
+| PUT    | /api/products/:id              | Update product by ID                 |
+| DELETE | /api/products/:id              | Delete product by ID                 |
+
+### 📄 Product Listing with Pagination, Sorting, and Search
+
+#### 🔢 Pagination:
+
+| Method | Endpoint                      | Example                               |
+|--------|-------------------------------|---------------------------------------|
+| GET    | /api/products?page=1           | /api/products?page=1                 |
+| GET    | /api/products?page=2           | /api/products?page=2                 |
+
+#### 💸 Sorting by Price:
+
+| Method | Endpoint                      | Example                               |
+|--------|-------------------------------|---------------------------------------|
+| GET    | /api/products?page=1&sort=asc  | /api/products?page=1&sort=asc        |
+| GET    | /api/products?page=1&sort=desc | /api/products?page=1&sort=desc       |
+
+#### 🔍 Search by Product Name or Category:
+
+| Method | Endpoint                      | Example                               |
+|--------|-------------------------------|---------------------------------------|
+| GET    | /api/products?search=Computer  | /api/products?search=Computer        |
+
+### 📊 Report Generation
+
+| Format | Endpoint                                   |
+|--------|--------------------------------------------|
+| CSV    | /api/products/report/download?format=csv  |
+| XLSX   | /api/products/report/download?format=xlsx |
 
 ---
 
-## 📄 Product Listing Features
+## ⚙️ Setup Instructions
 
-### 🔢 Pagination
+### 🔧 Backend
 
-- Fetch page 1:     
-GET /api/products?page=1    
+1. Navigate to the backend folder:
 
+    ```bash
+    cd backend
+    ```
 
-- Fetch page 2:
-GET /api/products?page=2
+2. Install dependencies:
 
+    ```bash
+    npm install
+    ```
 
+3. Create a `.env` file with the following configuration:
 
-### 💸 Sorting by Price
+    ```ini
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASSWORD=yourpassword
+    DB_NAME=CrudAssessment
+    JWT_SECRET=your_jwt_secret
+    ```
 
-- Ascending order:
-GET /api/products?page=1&sort=asc    
+4. Start the server:
 
-- Descending order:   
-GET /api/products?page=1&sort=desc   
+    ```bash
+    npm start
+    ```
 
+### 💻 Frontend
 
+1. Navigate to the frontend folder:
 
+    ```bash
+    cd frontend
+    ```
 
+2. Install dependencies:
 
-### 🔍 Search by Product Name or Category
+    ```bash
+    npm install
+    ```
 
-- Search for "Computer":
-GET /api/products?search=Computer    
+3. Run the Angular app:
 
-
-
----
-
-## 📊 Report Generation
-
-| Format | Endpoint                                             |
-|--------|------------------------------------------------------|
-| CSV    | `/api/products/report/download?format=csv`           |
-| XLSX   | `/api/products/report/download?format=xlsx`          |
+    ```bash
+    ng serve
+    ```
 
 ---
