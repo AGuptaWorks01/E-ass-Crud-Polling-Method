@@ -7,16 +7,7 @@ This project is a full-stack web application built using **Angular**, **Node.js 
 
 ## 🎬 Demo Video
 
-You can watch the demo video of the project here:
-
-[Demo Video](https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/blob/main/demo.mp4)
-
-Alternatively, you can view the demo embedded below:
-
-<video width="320" height="240" controls>
-  <source src="https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/raw/main/demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+![Demo Video](https://github.com/AGuptaWorks01/E-ass-Crud-Polling-Method/raw/main/demo.mp4)
 
 ---
 
@@ -156,6 +147,7 @@ CREATE TABLE `product_images` (
 | Method | Endpoint                      | Example                               |
 |--------|-------------------------------|---------------------------------------|
 | GET    | /api/products?search=Computer  | /api/products?search=Computer        |
+| GET    | /api/products?category=Computer  | /api/products?category=Computer    |
 
 ### 📊 Report Generation
 
