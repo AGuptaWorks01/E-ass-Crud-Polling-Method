@@ -16,7 +16,7 @@ const getAllCategory = async (page) => {
     const offset = (page - 1) * parseInt(limit); // Calculate offset based on page number
 
     const [rows] = await promisePool.execute(
-      "SELECT * FROM categories LIMIT ? OFFSET ?",
+      `SELECT * FROM categories LIMIT ? OFFSET ?`,
       [limit, offset.toString()]
     ); // Fetch categories with limit and offset
     return rows; // Return the list of categories
@@ -34,7 +34,7 @@ const postCategory = async (name) => {
   try {
     // Insert the new category into the database
     const [result] = await promisePool.execute(
-      "INSERT INTO categories (uuid, name) VALUES (?,?)",
+      `INSERT INTO categories (uuid, name) VALUES (?,?)`,
       [uuid, name]
     );
     return result; // Return the result of the insert operation
@@ -49,7 +49,7 @@ const putCategory = async (id, name) => {
   try {
     // Update the category name in the database
     const [rows] = await promisePool.execute(
-      "UPDATE categories SET name = ? WHERE id = ?",
+      `UPDATE categories SET name = ? WHERE id = ?`,
       [name, id]
     );
 
@@ -70,7 +70,7 @@ const deleteCategory = async (id) => {
   try {
     // Delete the category from the database
     const [rows] = await promisePool.execute(
-      "DELETE FROM categories WHERE id = ?",
+      `DELETE FROM categories WHERE id = ?`,
       [id]
     );
     return rows; // Return the result of the delete operation

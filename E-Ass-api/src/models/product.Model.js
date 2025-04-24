@@ -91,7 +91,7 @@ const postproducts = async (name, price, category_id) => {
 // Function to check if a category exists
 const checkCategoryExists = async (category_id) => {
   const [rows] = await promisePool.execute(
-    "SELECT id FROM categories WHERE id = ?",
+    `SELECT id FROM categories WHERE id = ?`,
     [category_id]
   );
   return rows.length > 0; // Return true if category exists, otherwise false
@@ -107,7 +107,7 @@ const putproducts = async (id, name, price, category_id, imagePaths = []) => {
 
     // Update product data
     await promisePool.execute(
-      "UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?",
+      `UPDATE products SET name = ?, price = ?, category_id = ? WHERE id = ?`,
       [name, price, category_id, id]
     );
 
