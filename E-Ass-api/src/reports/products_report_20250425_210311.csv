@@ -1,0 +1,12 @@
+id,name,price,created_at,updated_at,category_name
+11,Mouse With Cabinate,1120.00,Fri Apr 25 2025 20:52:11 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:52:11 GMT+0530 (India Standard Time),Home
+10,Mouse Blue,623.00,Fri Apr 25 2025 20:51:09 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:51:09 GMT+0530 (India Standard Time),HardDrive
+9,Ram 8GB,1100.00,Fri Apr 25 2025 20:50:34 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:50:34 GMT+0530 (India Standard Time),HardDrive
+8,Iphone Cover,250.00,Fri Apr 25 2025 20:49:52 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:49:52 GMT+0530 (India Standard Time),HardDrive
+7,Cap,99.00,Fri Apr 25 2025 20:48:49 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:48:49 GMT+0530 (India Standard Time),Home
+6,Curv Cabinate,899.00,Fri Apr 25 2025 20:48:18 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:48:18 GMT+0530 (India Standard Time),HardDrive
+5,Cabinate,799.00,Fri Apr 25 2025 20:47:53 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:47:53 GMT+0530 (India Standard Time),HardDrive
+4,A1,25.00,Fri Apr 25 2025 20:47:22 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:47:22 GMT+0530 (India Standard Time),HardDrive
+3,Car,499.00,Fri Apr 25 2025 20:46:16 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:46:16 GMT+0530 (India Standard Time),Toy
+2,IPhone 16max,99999.00,Fri Apr 25 2025 20:01:50 GMT+0530 (India Standard Time),Fri Apr 25 2025 20:01:50 GMT+0530 (India Standard Time),Phone
+1,Ssd Card,233.00,Fri Apr 25 2025 19:59:59 GMT+0530 (India Standard Time),Fri Apr 25 2025 19:59:59 GMT+0530 (India Standard Time),HardDrive

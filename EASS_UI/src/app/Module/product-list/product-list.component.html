@@ -50,7 +50,7 @@
               class="d-flex justify-content-center align-items-center flex-wrap p-1"
               style="min-height: 60px"
             >
-              <ng-container *ngIf="product.images.length > 0">
+              <!-- <ng-container *ngIf="product.images.length > 0">
                 <img
                   *ngFor="let image of product.images || []"
                   [src]="getImageUrl(image)"
@@ -58,7 +58,27 @@
                   class="img-thumbnail m-1"
                   style="width: 60px; height: 60px; object-fit: cover"
                 />
+              </ng-container> -->
+              <ng-container *ngIf="product.images.length > 0">
+                <div id="productImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    <div
+                      *ngFor="let image of product.images; let i = index"
+                      class="carousel-item"
+                      [class.active]="i === 0"
+                    >
+                      <img
+                        [src]="getImageUrl(image)"
+                        class="d-block w-60px"
+                        alt="{{ product.name }}"
+                        style="width: 60px; height: 60px; object-fit: cover"
+                      />
+                    </div>
+                  </div>
+              
+                </div>
               </ng-container>
+
             </td>
             <td>{{ product.name }}</td>
             <td>{{ product.category_name }}</td>
