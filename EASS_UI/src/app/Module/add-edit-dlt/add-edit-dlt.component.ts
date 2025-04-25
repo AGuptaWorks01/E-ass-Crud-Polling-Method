@@ -64,7 +64,9 @@ export class AddEditDltComponent {
   }
 
   onFileSelected(event: any): void {
-    const files = event.target?.files;
+    const input = event.target as HTMLInputElement;
+    const files = input?.files;
+
     if (files) {
       this.selectedFiles = Array.from(files);
       this.imagePreviews = [];

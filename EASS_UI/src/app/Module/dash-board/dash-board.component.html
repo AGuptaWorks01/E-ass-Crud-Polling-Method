@@ -80,7 +80,7 @@
         <!-- Header -->
         <div class="modal-header">
           <h5 class="modal-title">
-            {{ selectedProduct.name?.toUpperCase() }}
+            {{ selectedProduct?.name?.toUpperCase() }}
           </h5>
           <button
             type="button"
@@ -100,7 +100,7 @@
           >
             <div class="carousel-inner">
               <div
-                *ngFor="let image of selectedProduct.images; let i = index"
+                *ngFor="let image of selectedProduct?.images; let i = index"
                 class="carousel-item"
                 [class.active]="i === 0"
               >
@@ -134,9 +134,9 @@
           <!-- Product Info -->
           <div class="mt-4 text-center">
             <p>
-              <strong>Category:</strong> {{ selectedProduct.category_name }}
+              <strong>Category:</strong> {{ selectedProduct?.category_name }}
             </p>
-            <p><strong>Price:</strong> ₹{{ selectedProduct.price }}</p>
+            <p><strong>Price:</strong> ₹{{ selectedProduct?.price }}</p>
           </div>
         </div>
 

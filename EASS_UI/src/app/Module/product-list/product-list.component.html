@@ -27,8 +27,18 @@
             <th scope="col">Category</th>
             <th scope="col">
               Price
-              <button class="btn btn-sm btn-outline-primary ms-2" (click)="sortByPrice('asc')">↑</button>
-              <button class="btn btn-sm btn-outline-primary ms-1" (click)="sortByPrice('desc')">↓</button>
+              <button
+                class="btn btn-sm btn-outline-primary ms-2"
+                (click)="sortByPrice('asc')"
+              >
+                ↑
+              </button>
+              <button
+                class="btn btn-sm btn-outline-primary ms-1"
+                (click)="sortByPrice('desc')"
+              >
+                ↓
+              </button>
             </th>
             <th scope="col">Action</th>
           </tr>
@@ -36,10 +46,13 @@
 
         <tbody>
           <tr *ngFor="let product of products" class="align-middle text-center">
-            <td class="d-flex justify-content-center align-items-center flex-wrap p-1" style="min-height: 60px">
-              <ng-container *ngIf="product.images?.length > 0">
+            <td
+              class="d-flex justify-content-center align-items-center flex-wrap p-1"
+              style="min-height: 60px"
+            >
+              <ng-container *ngIf="product.images.length > 0">
                 <img
-                  *ngFor="let image of product.images"
+                  *ngFor="let image of product.images || []"
                   [src]="getImageUrl(image)"
                   alt="{{ product.name }}"
                   class="img-thumbnail m-1"
@@ -51,10 +64,16 @@
             <td>{{ product.category_name }}</td>
             <td>₹{{ product.price }}</td>
             <td>
-              <button class="btn btn-sm btn-info me-2" (click)="editProduct(product.id)">
+              <button
+                class="btn btn-sm btn-info me-2"
+                (click)="editProduct(product.id)"
+              >
                 <i class="bi bi-pencil"></i> Edit
               </button>
-              <button class="btn btn-sm btn-danger" (click)="deleteProduct(product.id)">
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="deleteProduct(product.id)"
+              >
                 <i class="bi bi-trash"></i> Delete
               </button>
             </td>
@@ -62,7 +81,10 @@
         </tbody>
       </table>
 
-      <div class="text text-center text-danger mt-3" *ngIf="products.length === 0">
+      <div
+        class="text text-center text-danger mt-3"
+        *ngIf="products.length === 0"
+      >
         <h5>No Products Found!</h5>
       </div>
 
@@ -75,9 +97,7 @@
         >
           Previous
         </button>
-        <span class="mx-3">
-          Page {{ currentPage }} of {{ totalPages }}
-        </span>
+        <span class="mx-3"> Page {{ currentPage }} of {{ totalPages }} </span>
         <button
           class="btn btn-outline-primary"
           (click)="changePage(currentPage + 1)"
